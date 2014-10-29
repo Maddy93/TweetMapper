@@ -9,9 +9,8 @@ def index(request):
     if request.GET.get('catSelect'):
         cat = request.GET['catSelect']
     else:
-        cat = "halloween"
+        cat = ""
     tweet_list = Tweetdata.objects.filter(category=cat)
-    #output = ', '.join([p.question_text for p in latest_question_list])
     template = loader.get_template('twittmapapp/index.html')
     context = RequestContext(request, {
         'tweet_list': tweet_list,
