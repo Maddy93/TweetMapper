@@ -7,14 +7,14 @@
           type="text/javascript"></script>
   <script type="text/javascript">
         function newmap(){
-            cat = document.getElementById("catSelect").value;
-            location.href = 
+            document.catForm.action = "/twittmapapp/";
+            document.catForm.submit();
         }
   </script>
 </head> 
 <body>
-  <form>
-    <select id="catSelect" onChange="newmap();">
+  <form id = "catForm" name = "catForm" action = "/twittmapapp" method = "get">
+    <select id="catSelect" name="catSelect" onchange="this.form.submit()">
     <option value="halloween">halloween</option>
     <option value="google">google</option>
     <option value="ebola">ebola</option>
