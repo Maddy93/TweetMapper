@@ -8,6 +8,7 @@
   <script type="text/javascript">
         function newmap(){
             cat = document.getElementById("catSelect").value;
+            location.href = 
         }
   </script>
 </head> 
