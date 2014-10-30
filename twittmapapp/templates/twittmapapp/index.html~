@@ -9,6 +9,7 @@
 <body>
   <form id = "catForm" name = "catForm" action = "/twittmapapp" method = "get">
     <select id="catSelect" name="catSelect" onchange="this.form.submit()">
+    <option value=""></option>
     <option value="halloween">halloween</option>
     <option value="google">google</option>
     <option value="ebola">ebola</option>
@@ -21,29 +22,36 @@
     var locations = new Array();
     {% if tweet_list %}
         {% for tweet in tweet_list %}
-            latlong = new Array();
-            latlong.push({{ tweet.latitude }}, {{ tweet.longitude }});
-            locations.push(latlong);
+            locations.push(new google.maps.LatLng({{ tweet.latitude }}, {{ tweet.longitude }}));
+          //  latlong = new Array();
+          //  latlong.push({{ tweet.latitude }}, {{ tweet.longitude }});
+          //  locations.push(latlong);
         {% endfor %}
     {% endif %} 
 
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 1,
       center: new google.maps.LatLng(-33.92, 151.25),
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      mapTypeId: google.maps.MapTypeId.SATELLITE
     });
 
-    var infowindow = new google.maps.InfoWindow();
+/*    var infowindow = new google.maps.InfoWindow();
 
     var marker, i;
-
-    for (i = 0; i < locations.length; i++) {  
+      for (i = 0; i < locations.length; i++) {  
       marker = new google.maps.Marker({
         position: new google.maps.LatLng(locations[i][0], locations[i][1]),
         map: map
       });
 
-    }
+    }*/
+    var pointArray = new google.maps.MVCArray(locations);
+    var heatmap;
+    heatmap = new google.maps.visualization.HeatmapLayer({
+    data: pointArray
+    });
+
+    heatmap.setMap(map);
   </script>
 </body>
 </html>
