@@ -8,4 +8,4 @@ option_settings:
     option_name: WSGIPath
     value: mysite/wsgi.py
   - option_name: DJANGO_SETTINGS_MODULE
-    value: mysite.settings
+    value: cloud.settings
