@@ -39,6 +39,10 @@ INSTALLED_APPS = (
     'twittmapapp',
 )
 
+# CRONJOBS = [
+#     ('* * * * * *', 'cloud.twittmapapp.cron.tweet_collector()'),        
+# ]
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

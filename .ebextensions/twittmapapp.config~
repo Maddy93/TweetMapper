@@ -2,10 +2,13 @@ container_commands:
   01_syncdb:    
     command: "django-admin.py syncdb --noinput"
     leader_only: true
+  01_tweet_collector:
+    command: "cat .ebextensions/tweet_collector.txt > /etc/cron.d/tweet_collector && chmod 644 /etc/cron.d/tweet_collector"
+    leader_only: true
 
 option_settings:
   - namespace: aws:elasticbeanstalk:container:python
     option_name: WSGIPath
-    value: mysite/wsgi.py
+    value: cloud/wsgi.py
   - option_name: DJANGO_SETTINGS_MODULE
     value: cloud.settings

@@ -1,0 +1,2 @@
+* * * * * root python ../twittmapapp/cron.py
+    
