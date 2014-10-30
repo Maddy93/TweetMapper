@@ -1,2 +1,2 @@
-* * * * * root python ../twittmapapp/cron.py
+* * * * * python /home/ec2-user/cloud/twittmapapp/management/commands/tweet_collector.py
     
