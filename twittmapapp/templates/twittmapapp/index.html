@@ -20,6 +20,7 @@
 <!--  </form> -->
   <button onclick="toggleHeatmap()">Toggle Heatmap</button>
   <div id="posOrNeg"></div>  
+  <div id="overallSentiment"></div>  
   <div id="map" style="width: 1000px; height: 800px;"></div>
 
   <script type="text/javascript">
@@ -47,6 +48,9 @@
 
         heatmap.setMap(null);                    
         pointArray = new google.maps.MVCArray(locations[category][current_sentiment]);
+        pos = locations[category]['positive'].length*100/locations[category].length;
+        neg = locations[category]['negative'].length*100/locations[category].length;
+        document.getElementById('overallSentiment') = "positive percent:"+pos +"\nnegative percent:"+neg;
         heatmap = new google.maps.visualization.HeatmapLayer({
             data: pointArray
         });
