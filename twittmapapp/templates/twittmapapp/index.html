@@ -50,6 +50,7 @@
         pointArray = new google.maps.MVCArray(locations[category][current_sentiment]);
 
         if(!(category in locations)){
+            console.log('here');
             pos = neg = 0;
         }
         else if(!('positive' in locations[category])){
@@ -89,10 +90,8 @@
                     var str = data.Messages[0]['Body'];
                   //  var json = JSON.stringify(eval("(" + str + ")"));
                     var json_obj = jQuery.parseJSON(str)
-                    console.log(str);
                     msg = json_obj["Message"];
                     vals = msg.split("#");
-                    console.log(vals[0]+" "+vals[1]+" "+vals[2])
                     if(!(vals[3] in locations)){
                         locations[vals[3]] = new Array();
                     }
@@ -102,7 +101,6 @@
                     locations[vals[3]][vals[0]].push({location:new google.maps.LatLng(vals[1],vals[2]),weight:Math.abs(vals[4])});
                     resetMap();                           
                     receipt_handle = json_obj["Signature"];
-                    console.log(receipt_handle);
                     queue.deleteMessage({params: {QueueUrl: 'https://sqs.us-west-2.amazonaws.com/410402614078/sentiment_queue_result',ReceiptHandle: receipt_handle}});
                 }                
             }
