@@ -46,9 +46,6 @@
         var element = document.getElementById('catSelect');
         var category = element.options[element.selectedIndex].text;
 
-        heatmap.setMap(null);                    
-        pointArray = new google.maps.MVCArray(locations[category][current_sentiment]);
-
         if(!(category in locations)){
             console.log('here');
             pos = neg = 0;
@@ -64,7 +61,11 @@
         else {
             pos = locations[category]['positive'].length*100/(locations[category]['positive'].length+locations[category]['negative'].length);
             neg = locations[category]['negative'].length*100/(locations[category]['positive'].length+locations[category]['negative'].length);
-        }    
+        }
+        
+        heatmap.setMap(null);                    
+        pointArray = new google.maps.MVCArray(locations[category][current_sentiment]);
+    
         document.getElementById('overallSentiment').innerHTML = "positive percent:"+pos +"<br>negative percent:"+neg;
         heatmap = new google.maps.visualization.HeatmapLayer({
             data: pointArray
