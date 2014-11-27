@@ -21,7 +21,7 @@
 
   <script type="text/javascript">
     $(document).ready(function() {
-        refreshQueue();
+        setInterval(function(){refreshQueue()}, 5000);
     });
     AWS.config.update({accessKeyId: 'AKIAJYZONH7L3P5Q2UIA', secretAccessKey: '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'});
     AWS.config.region = 'us-west-2';
@@ -46,6 +46,7 @@
         });
 //        setTimeout(refreshQueue(), 5000);
     }    
+    refreshQueue();
     var locations = new Array();
 /*    {% if tweet_list %}
         {% for tweet in tweet_list %}
