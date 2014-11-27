@@ -12,9 +12,10 @@
     <select id="catSelect" name="catSelect" onchange="changeCat()">
 <!--    <option value=""></option> -->
     <option value="halloween" selected="selected">thanksgiving</option>
-    <option value="google">google</option>
+    <option value="google">winter</option>
     <option value="ebola">ebola</option>
-    <option value="obama">obama</option>
+    <option value="obama">ferguson</option>
+    <option value="obama">christmas</option>
     </select>
 <!--  </form> -->
   <div id="map" style="width: 1000px; height: 800px;"></div>
@@ -33,18 +34,29 @@
     function changeCat(){
         var element = document.getElementById('catSelect');
         var category = element.options[element.selectedIndex].text;
+        resetMap();
     }
+    var current_sentiment = 'positive';
     function resetMap(){
         var element = document.getElementById('catSelect');
         var category = element.options[element.selectedIndex].text;
 
         heatmap.setMap(null);                    
-        pointArray = new google.maps.MVCArray(locations[category]);
+        pointArray = new google.maps.MVCArray(locations[category][current_sentiment]);
         heatmap = new google.maps.visualization.HeatmapLayer({
             data: pointArray
         });
         heatmap.setMap(map);
 
+    }
+    function toggleHeatmap() {
+        if(current_sentiment == 'positive'){
+            current_sentiment = 'negative';
+        }
+        else if(current_sentiment == 'negative'){
+            current_sentiment = 'positive';
+        }
+        resetMap();
     }
     function refreshQueue(){
         queue.receiveMessage(function (err, data) {
@@ -61,7 +73,10 @@
                     if(!(vals[3] in locations)){
                         locations[vals[3]] = new Array();
                     }
-                    locations[vals[3]].push(new google.maps.LatLng(vals[1],vals[2]));
+                    if(!(vals[0] in locations[vals[3]][vals[0]])){
+                        locations[vals[3]][vals[0]] = new Array();
+                    }
+                    locations[vals[3]][vals[0]].push({location:new google.maps.LatLng(vals[1],vals[2]),weight:Math.abs(vals[4])});
                     resetMap();                           
                     receipt_handle = json_obj["Signature"];
                     console.log(receipt_handle);
