@@ -58,7 +58,7 @@
                     msg = json_obj["Message"];
                     vals = msg.split("#");
                     console.log(vals[0]+" "+vals[1]+" "+vals[2])
-                    if(!(val[3] in locations)){
+                    if(!(vals[3] in locations)){
                         locations[vals[3]] = new Array();
                     }
                     locations[vals[3]].push(new google.maps.LatLng(vals[1],vals[2]));
