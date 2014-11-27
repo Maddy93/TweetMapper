@@ -44,8 +44,9 @@
                 if(data.Messages[0]) {
                 //console.log(data.Messages[0]['Body']);
                     var str = data.Messages[0]['Body'];
-                    var json = JSON.stringify(eval("(" + str + ")"));
-                    console.log(json["Message"]);
+                  //  var json = JSON.stringify(eval("(" + str + ")"));
+                    var json_obj = jQuery.parseJSON(str)
+                    console.log(json_obj["Message"]);
                 }
                 
             }
