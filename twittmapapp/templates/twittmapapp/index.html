@@ -41,8 +41,13 @@
     function refreshQueue(){
         queue.receiveMessage(function (err, data) {
             if (data) {
-                if(data.Messages[0]) 
-                console.log(data.Messages[0]['Body']);
+                if(data.Messages[0]) {
+                //console.log(data.Messages[0]['Body']);
+                    var str = data.Messages[0]['Body'];
+                    var json = JSON.stringify(eval("(" + str + ")"));
+                    console.log(json);
+                }
+                
             }
         });
     }    
