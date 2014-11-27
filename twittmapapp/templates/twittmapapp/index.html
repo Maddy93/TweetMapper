@@ -23,7 +23,7 @@
     $(document).ready(function() {
         setInterval(function(){refreshQueue()}, 5000);
     });
-    AWS.config.update({accessKeyId: 'AKIAJYZONH7L3P5Q2UIA', secretAccessKey: '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'});
+    AWS.config.update({accessKeyId: 'AKIAJEEWFP5ITBUJ2JGA', secretAccessKey: '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'});
     AWS.config.region = 'us-west-2';
 /*    var sns = new AWS.SNS({params: {TopicArn: 'arn:aws:sns:us-west-2:410402614078:test'}});
     var params = {
@@ -37,16 +37,15 @@
     });
     
     */
-    var queue = new AWS.SQS({params: {QueueUrl: 'https://sqs.us-west-2.amazonaws.com/434516203762/queueTest'}}); // using url to queue
+    var queue = new AWS.SQS({params: {QueueUrl: 'https://sqs.us-west-2.amazonaws.com/410402614078/sentiment_queue_result'}}); // using url to queue
     function refreshQueue(){
         queue.receiveMessage(function (err, data) {
             if (data) {
+                if(data.Messages[0]) 
                 console.log(data.Messages[0]['Body']);
             }
         });
-//        setTimeout(refreshQueue(), 5000);
     }    
-    refreshQueue();
     var locations = new Array();
 /*    {% if tweet_list %}
         {% for tweet in tweet_list %}
