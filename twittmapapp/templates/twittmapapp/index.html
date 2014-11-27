@@ -40,6 +40,7 @@
     var queue = new AWS.SQS({params: {QueueUrl: 'https://sqs.us-west-2.amazonaws.com/434516203762/queueTest'}}); // using url to queue
     queue.receiveMessage(function (err, data) {
       if (data) {
+        console.log("test");
         console.log(data.Messages); // message data in Messages structure
       }
     });
