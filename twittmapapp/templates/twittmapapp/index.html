@@ -51,6 +51,8 @@
                     vals = msg.split("#");
                     console.log(vals[0]+" "+vals[1]+" "+vals[2])
                     locations.push(new google.maps.LatLng(vals[1],vals[2]));
+                    receipt_handle = json_obj["Signature"];
+                    queue.deleteMessage({params: {QueueUrl: 'https://sqs.us-west-2.amazonaws.com/410402614078/sentiment_queue_result',ReceiptHandle: receipt_handle}})
                 }
                 
             }
