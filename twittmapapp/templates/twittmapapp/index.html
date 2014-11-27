@@ -28,7 +28,7 @@
         setInterval(function(){refreshQueue()}, 1000);
         initialize();
     });
-    AWS.config.update({accessKeyId: 'AKIAJEEWFP5ITBUJ2JGA', secretAccessKey: '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'});
+    AWS.config.update({accessKeyId: '', secretAccessKey: ''});
     AWS.config.region = 'us-west-2';
     var queue = new AWS.SQS({params: {QueueUrl: 'https://sqs.us-west-2.amazonaws.com/410402614078/sentiment_queue_result'}}); // using url to queue
     var locations = new Array();
