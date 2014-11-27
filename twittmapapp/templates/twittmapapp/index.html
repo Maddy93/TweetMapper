@@ -8,40 +8,44 @@
     <script language="javascript" type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>  
 </head> 
 <body>
-  <form id = "catForm" name = "catForm" action = "/twittmapapp" method = "get">
-    <select id="catSelect" name="catSelect" onchange="this.form.submit()">
-    <option value=""></option>
-    <option value="halloween">halloween</option>
+<!--  <form id = "catForm" name = "catForm" action = "/twittmapapp" method = "get"> -->
+    <select id="catSelect" name="catSelect" onchange="changeCat()">
+<!--    <option value=""></option> -->
+    <option value="halloween" selected="selected">thanksgiving</option>
     <option value="google">google</option>
     <option value="ebola">ebola</option>
     <option value="obama">obama</option>
     </select>
-  </form>
+<!--  </form> -->
   <div id="map" style="width: 1000px; height: 800px;"></div>
 
   <script type="text/javascript">
     $(document).ready(function() {
-        setInterval(function(){refreshQueue()}, 5000);
+        setInterval(function(){refreshQueue()}, 1000);
         initialize();
     });
     AWS.config.update({accessKeyId: 'AKIAJEEWFP5ITBUJ2JGA', secretAccessKey: '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'});
     AWS.config.region = 'us-west-2';
-/*    var sns = new AWS.SNS({params: {TopicArn: 'arn:aws:sns:us-west-2:410402614078:test'}});
-    var params = {
-        Token: 'STRING_VALUE', 
-        TopicArn: 'arn:aws:sns:us-west-2:410402614078:test', 
-        AuthenticateOnUnsubscribe: 'STRING_VALUE'
-    };
-    sns.confirmSubscription(params, function(err, data) {
-        if (err) console.log(err, err.stack); // an error occurred
-        else     console.log(data);           // successful response
-    });
-    
-    */
     var queue = new AWS.SQS({params: {QueueUrl: 'https://sqs.us-west-2.amazonaws.com/410402614078/sentiment_queue_result'}}); // using url to queue
     var locations = new Array();
     var heatmap;
     var map;
+    function changeCat(){
+        var element = document.getElementsById('catSelect');
+        var category = element.options[element.selectedIndex].text;
+    }
+    function resetMap(){
+        var element = document.getElementsById('catSelect');
+        var category = element.options[element.selectedIndex].text;
+
+        heatmap.setMap(null);                    
+        pointArray = new google.maps.MVCArray(locations[category]);
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: pointArray
+        });
+        heatmap.setMap(map);
+
+    }
     function refreshQueue(){
         queue.receiveMessage(function (err, data) {
             if (data) {
@@ -54,28 +58,15 @@
                     msg = json_obj["Message"];
                     vals = msg.split("#");
                     console.log(vals[0]+" "+vals[1]+" "+vals[2])
-                    locations.push(new google.maps.LatLng(vals[1],vals[2]));
-                    
-                    heatmap.setMap(null);                    
-                    pointArray = new google.maps.MVCArray(locations);
-                    heatmap = new google.maps.visualization.HeatmapLayer({
-                        data: pointArray
-                    });
-                    heatmap.setMap(map);
-                    
+                    locations[vals[3]].push(new google.maps.LatLng(vals[1],vals[2]));
+                    resetMap();                                       
                     receipt_handle = json_obj["Signature"];
                     console.log(receipt_handle)
                     queue.deleteMessage({params: {QueueUrl: 'https://sqs.us-west-2.amazonaws.com/410402614078/sentiment_queue_result',ReceiptHandle: receipt_handle}});
-                }
-                
+                }                
             }
         });
     }    
-/*    {% if tweet_list %}
-        {% for tweet in tweet_list %}
-            locations.push(new google.maps.LatLng({{ tweet.latitude }}, {{ tweet.longitude }}));
-        {% endfor %}
-    {% endif %} */
     function initialize(){
           map = new google.maps.Map(document.getElementById('map'), {
           zoom: 1,
