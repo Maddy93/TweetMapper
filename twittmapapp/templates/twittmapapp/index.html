@@ -2,10 +2,9 @@
 <html> 
 <head> 
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" /> 
-  <title>Google Maps Multiple Markers</title> 
- <!-- <script src="http://maps.google.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false" 
-          type="text/javascript"></script> -->
+  <title>Google Maps Heat map</title> 
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.0.29.min.js"></script>
     <script language="javascript" type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>  
 </head> 
 <body>
@@ -21,8 +20,28 @@
   <div id="map" style="width: 1000px; height: 800px;"></div>
 
   <script type="text/javascript">
-    $(document).ready(function() {
+/*    $(document).ready(function() {
         setInterval("location.reload(true)", 10000);
+    });*/
+    AWS.config.update({accessKeyId: 'AKIAJYZONH7L3P5Q2UIA', secretAccessKey: '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'});
+    AWS.config.region = 'us-west-2';
+/*    var sns = new AWS.SNS({params: {TopicArn: 'arn:aws:sns:us-west-2:410402614078:test'}});
+    var params = {
+        Token: 'STRING_VALUE', 
+        TopicArn: 'arn:aws:sns:us-west-2:410402614078:test', 
+        AuthenticateOnUnsubscribe: 'STRING_VALUE'
+    };
+    sns.confirmSubscription(params, function(err, data) {
+        if (err) console.log(err, err.stack); // an error occurred
+        else     console.log(data);           // successful response
+    });
+    
+    */
+    var queue = new AWS.SQS({params: {QueueUrl: 'https://sqs.us-west-2.amazonaws.com/434516203762/queueTest'}}); // using url to queue
+    queue.receiveMessage(function (err, data) {
+      if (data) {
+        console.log(data.Messages); // message data in Messages structure
+      }
     });
     var locations = new Array();
     {% if tweet_list %}
@@ -35,7 +54,7 @@
       zoom: 1,
       center: new google.maps.LatLng(-33.92, 151.25),
       mapTypeId: google.maps.MapTypeId.SATELLITE
-    });
+    }); 
 
     var pointArray = new google.maps.MVCArray(locations);
     var heatmap;
