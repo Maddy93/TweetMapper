@@ -37,7 +37,7 @@
     });
     
     */
-    var queue = new AWS.SQS({params: {QueueUrl: 'https://sqs.us-west-2.amazonaws.com/434516203762/queueTest'}}); // using url to queue
+    var queue = new AWS.SQS(params = {QueueUrl: 'https://sqs.us-west-2.amazonaws.com/434516203762/queueTest'}); // using url to queue
     queue.receiveMessage(function (err, data) {
       if (data) {
         console.log("test");
@@ -45,11 +45,11 @@
       }
     });
     var locations = new Array();
-    {% if tweet_list %}
+/*    {% if tweet_list %}
         {% for tweet in tweet_list %}
             locations.push(new google.maps.LatLng({{ tweet.latitude }}, {{ tweet.longitude }}));
         {% endfor %}
-    {% endif %} 
+    {% endif %} */
 
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 1,
