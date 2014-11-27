@@ -45,7 +45,7 @@
                 //console.log(data.Messages[0]['Body']);
                     var str = data.Messages[0]['Body'];
                     var json = JSON.stringify(eval("(" + str + ")"));
-                    console.log(json);
+                    console.log(json["Message"]);
                 }
                 
             }
