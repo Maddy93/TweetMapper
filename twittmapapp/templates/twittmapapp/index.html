@@ -62,11 +62,10 @@
             pos = locations[category]['positive'].length*100/(locations[category]['positive'].length+locations[category]['negative'].length);
             neg = locations[category]['negative'].length*100/(locations[category]['positive'].length+locations[category]['negative'].length);
         }
-        
+        document.getElementById('overallSentiment').innerHTML = "positive percent:"+pos +"<br>negative percent:"+neg;
         heatmap.setMap(null);                    
         pointArray = new google.maps.MVCArray(locations[category][current_sentiment]);
     
-        document.getElementById('overallSentiment').innerHTML = "positive percent:"+pos +"<br>negative percent:"+neg;
         heatmap = new google.maps.visualization.HeatmapLayer({
             data: pointArray
         });
