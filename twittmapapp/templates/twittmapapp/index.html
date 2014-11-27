@@ -50,7 +50,7 @@
         pointArray = new google.maps.MVCArray(locations[category][current_sentiment]);
         pos = locations[category]['positive'].length*100/locations[category].length;
         neg = locations[category]['negative'].length*100/locations[category].length;
-        document.getElementById('overallSentiment') = "positive percent:"+pos +"\nnegative percent:"+neg;
+        document.getElementById('overallSentiment').innerHTML = "positive percent:"+pos +"\nnegative percent:"+neg;
         heatmap = new google.maps.visualization.HeatmapLayer({
             data: pointArray
         });
