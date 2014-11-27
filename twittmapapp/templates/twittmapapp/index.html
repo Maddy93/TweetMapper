@@ -22,6 +22,7 @@
   <script type="text/javascript">
     $(document).ready(function() {
         setInterval(function(){refreshQueue()}, 5000);
+        initialize();
     });
     AWS.config.update({accessKeyId: 'AKIAJEEWFP5ITBUJ2JGA', secretAccessKey: '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'});
     AWS.config.region = 'us-west-2';
@@ -38,6 +39,9 @@
     
     */
     var queue = new AWS.SQS({params: {QueueUrl: 'https://sqs.us-west-2.amazonaws.com/410402614078/sentiment_queue_result'}}); // using url to queue
+    var locations = new Array();
+    var heatmap;
+    var map;
     function refreshQueue(){
         queue.receiveMessage(function (err, data) {
             if (data) {
@@ -51,33 +55,42 @@
                     vals = msg.split("#");
                     console.log(vals[0]+" "+vals[1]+" "+vals[2])
                     locations.push(new google.maps.LatLng(vals[1],vals[2]));
+                    
+                    heatmap.setMap(null);                    
+                    pointArray = new google.maps.MVCArray(locations);
+                    heatmap = new google.maps.visualization.HeatmapLayer({
+                        data: pointArray
+                    });
+                    heatmap.setMap(map);
+                    
                     receipt_handle = json_obj["Signature"];
-                    queue.deleteMessage({params: {QueueUrl: 'https://sqs.us-west-2.amazonaws.com/410402614078/sentiment_queue_result',ReceiptHandle: receipt_handle}})
+                    console.log(receipt_handle)
+                    queue.deleteMessage({params: {QueueUrl: 'https://sqs.us-west-2.amazonaws.com/410402614078/sentiment_queue_result',ReceiptHandle: receipt_handle}});
                 }
                 
             }
         });
     }    
-    var locations = new Array();
 /*    {% if tweet_list %}
         {% for tweet in tweet_list %}
             locations.push(new google.maps.LatLng({{ tweet.latitude }}, {{ tweet.longitude }}));
         {% endfor %}
     {% endif %} */
+    function initialize(){
+          map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 1,
+          center: new google.maps.LatLng(-33.92, 151.25),
+          mapTypeId: google.maps.MapTypeId.SATELLITE
+        }); 
 
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 1,
-      center: new google.maps.LatLng(-33.92, 151.25),
-      mapTypeId: google.maps.MapTypeId.SATELLITE
-    }); 
+        var pointArray = new google.maps.MVCArray(locations);
 
-    var pointArray = new google.maps.MVCArray(locations);
-    var heatmap;
-    heatmap = new google.maps.visualization.HeatmapLayer({
-    data: pointArray
-    });
+        heatmap = new google.maps.visualization.HeatmapLayer({
+        data: pointArray
+        });
 
-    heatmap.setMap(map);
+        heatmap.setMap(map);
+   }
   </script>
 </body>
 </html>
