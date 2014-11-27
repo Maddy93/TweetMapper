@@ -31,11 +31,11 @@
     var heatmap;
     var map;
     function changeCat(){
-        var element = document.getElementsById('catSelect');
+        var element = document.getElementById('catSelect');
         var category = element.options[element.selectedIndex].text;
     }
     function resetMap(){
-        var element = document.getElementsById('catSelect');
+        var element = document.getElementById('catSelect');
         var category = element.options[element.selectedIndex].text;
 
         heatmap.setMap(null);                    
